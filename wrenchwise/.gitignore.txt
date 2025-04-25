@@ -1,0 +1,15 @@
+# Ignore Visual Studio folders
+.vs/
+*.user
+*.suo
+
+# Ignore build results
+bin/
+obj/
+
+# Ignore ASP.NET publish folder
+wwwroot/
+
+# Ignore node_modules if using Angular
+node_modules/
+dist/

@@ -1,0 +1,6 @@
+@wrenchwise_HostAddress = http://localhost:5058
+
+GET {{wrenchwise_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
