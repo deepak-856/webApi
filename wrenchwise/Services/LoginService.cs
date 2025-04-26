@@ -27,7 +27,7 @@ namespace wrenchwise.services
             var parameters = new DynamicParameters();
             parameters.Add("p_email", request.email);
             parameters.Add("p_password", request.password);
-            parameters.Add("p_role_type", RoleTypeIntToEnum(request.role_type));
+            parameters.Add("p_role_type", RoleTypeIntToEnum(request.role_type ));
 
             try
             {
@@ -42,7 +42,7 @@ namespace wrenchwise.services
                     };
                 }
 
-                var token = GenerateJwtToken(request.email, RoleTypeIntToEnum(request.role_type));
+                var token = GenerateJwtToken(request.email, RoleTypeIntToEnum(request.role_type ));
 
                 return new LoginResponse
                 {
@@ -90,7 +90,7 @@ namespace wrenchwise.services
         }
 
 
-        private string RoleTypeIntToEnum(int roleType)
+        private string RoleTypeIntToEnum(int? roleType)
         {
             return roleType switch
             {

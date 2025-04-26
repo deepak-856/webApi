@@ -59,13 +59,5 @@ namespace wrenchwise.Controllers
         //    });
         //}
 
-        [HttpPost("technicians")]
-        public async Task<IActionResult> TechniciansLogin([FromBody] LoginRequest request)
-        {
-            request.role_type = 3;
-            var result = await _loginService.Authenticate(request);
-
-            return result.Success ? Ok(result) : Unauthorized(result);
-        }
     }
 }
