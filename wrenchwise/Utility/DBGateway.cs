@@ -296,6 +296,23 @@ namespace wrenchwise.Utility
         }
 
 
+        public async Task<IEnumerable<T>> QuerySPAsync<T>(string storedProcedureName, DynamicParameters parameters)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var result = await connection.QueryAsync<T>(
+                    storedProcedureName,
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return result;
+            }
+        }
+
+
 
         //public async Task<int> ExecuteAsync(string query, DynamicParameters parameters)
         //{

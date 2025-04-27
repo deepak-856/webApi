@@ -47,9 +47,15 @@ namespace wrenchwise.Services
                     Message = $"Registration failed: {ex.Message}"
                 };
             }
-            
         }
-       
+
+        public async Task<IEnumerable<AdminUser>> GetAllRegisteredUsersAsync()
+        {
+            var result = await _dbGateway.QuerySPAsync<AdminUser>("sp_get_all_registered_users", null);
+            return result;
+        }
+
+
 
 
 

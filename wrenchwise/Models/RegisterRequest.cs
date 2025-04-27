@@ -6,6 +6,7 @@ namespace wrenchwise.Models
     {
         public string? Username { get; set; }
         public string? Password { get; set; }
+
         //public int RoleType { get; set; } // "Admin", "User", "Technician"
 
         //[Required]
