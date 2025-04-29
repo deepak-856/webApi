@@ -13,6 +13,7 @@ namespace wrenchwise.Models
         //[EmailAddress]
         public string? Email { get; set; }
         public string? Mobile { get; set; }
+        public object? Name { get; internal set; }
         //public int CreatedBy { get; set; }  // Use 0 for self-registration
     }
 }

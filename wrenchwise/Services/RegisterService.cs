@@ -21,7 +21,7 @@ namespace wrenchwise.Services
         {   
             var parameters = new DynamicParameters();
 
-            parameters.Add("p_username", request.Username);
+            parameters.Add("p_name", request.Name);
             parameters.Add("p_password", request.Password); // 🔐 hash this in production!
             parameters.Add("p_role_type", "User");
             parameters.Add("p_email", request.Email);
