@@ -6,5 +6,9 @@ namespace wrenchwise.Interfaces
     {
         Task<IEnumerable<AdminTech>> GetAllRegisteredTechniciansAsync();
         Task<TechnicianResponse> AddTechnicianAsync(TechnicianRequest request);
+        Task<TechnicianResponse> UpdateTechnicianAsync(int loginId, TechnicianRequest request);
+
+        Task<TechnicianResponse> DeleteTechnicianAsync(int id);
+
     }
 }

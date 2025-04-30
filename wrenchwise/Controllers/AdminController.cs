@@ -56,5 +56,24 @@ namespace wrenchwise.Controllers
             var technicians = await _technicianService.GetAllRegisteredTechniciansAsync();
             return Ok(technicians);
         }
+
+        [HttpPut("update-tech/{id}")]
+        public async Task<IActionResult> UpdateTechnicians( int id, [FromBody] TechnicianRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _technicianService.UpdateTechnicianAsync(id, request);
+            return result.Success ? Ok(result) : BadRequest(result);
+        }
+
+
+        [HttpDelete("delete-technician/{loginId}")]
+        public async Task<IActionResult> DeleteTechnician(int loginId)
+        {
+            var result = await _technicianService.DeleteTechnicianAsync(loginId);
+            return result.Success ? Ok(result) : BadRequest(result);
+        }
+
     }
 }

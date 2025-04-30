@@ -49,5 +49,43 @@ namespace wrenchwise.Services
             var result = await _dbGateway.QuerySPAsync<AdminTech>("sp_get_all_technicians", null);
             return result;
         }
+
+        public async Task<TechnicianResponse> UpdateTechnicianAsync(int loginId, TechnicianRequest request)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("p_login_id", request.LoginId);
+            parameters.Add("p_username", request.Name);
+            parameters.Add("p_password", request.Password);
+            parameters.Add("p_email", request.Email);
+            parameters.Add("p_mobile", request.Mobile);
+
+            try
+            {
+                await _dbGateway.ExeSPScaler<int>("sp_update_technician", parameters);
+                return new TechnicianResponse { Success = true, Message = "Technician updated successfully." };
+            }
+            catch (Exception ex)
+            {
+                return new TechnicianResponse { Success = false, Message = $"Update failed: {ex.Message}" };
+            }
+        }
+
+        public async Task<TechnicianResponse> DeleteTechnicianAsync(int loginId)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("p_login_id", loginId);
+
+            try
+            {
+                await _dbGateway.ExeSPScaler<int>("sp_delete_technician", parameters);
+                return new TechnicianResponse { Success = true, Message = "Technician deleted successfully." };
+            }
+            catch (Exception ex)
+            {
+                return new TechnicianResponse { Success = false, Message = $"Delete failed: {ex.Message}" };
+            }
+        }
+
+
     }
 }
