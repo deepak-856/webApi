@@ -11,12 +11,10 @@ namespace wrenchwise.Services
     public class RegisterService : IRegisterService
     {
         private readonly DBGateway _dbGateway;
-
         public RegisterService(DBGateway dbGateway)
         {
             _dbGateway = dbGateway;
         }
-
         public async Task<RegisterResponse> RegisterAsync(wrenchwise.Models.RegisterRequest request)
         {   
             var parameters = new DynamicParameters();
