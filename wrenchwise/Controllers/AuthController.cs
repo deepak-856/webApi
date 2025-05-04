@@ -9,10 +9,12 @@ namespace wrenchwise.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IRegisterService _registerService;
+        private readonly IUserService _userService; 
 
-        public AuthController(IRegisterService registerService)
+        public AuthController(IRegisterService registerService, IUserService userService)
         {
             _registerService = registerService;
+            _userService = userService;
         }
 
         [HttpPost("register")]
@@ -28,7 +30,18 @@ namespace wrenchwise.Controllers
             return BadRequest(result);
         }
 
-        
+
+        [HttpPost("update-user")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserprofile request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return await _userService.UpdateProfileAsync(request);
+        }
+
+
+
 
     }
 }

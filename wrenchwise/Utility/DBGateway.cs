@@ -2,6 +2,7 @@
 using Dapper;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 
 
@@ -312,6 +313,27 @@ namespace wrenchwise.Utility
             }
         }
 
+        public async Task ExecuteSPAsync(string storedProcedure, object parameters)
+        {
+            try
+            {
+                using (IDbConnection conn = Connection())
+                {
+                    if (conn.State == ConnectionState.Closed)
+                    {
+                        conn.Open();
+                    }
+
+                    // Execute stored procedure with parameters
+                    await conn.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error (optional) or rethrow it based on your logging strategy
+                throw new Exception($"Error executing stored procedure: {ex.Message}", ex);
+            }
+        }
 
 
         //public async Task<int> ExecuteAsync(string query, DynamicParameters parameters)
