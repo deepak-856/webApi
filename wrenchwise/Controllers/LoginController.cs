@@ -17,7 +17,9 @@ namespace wrenchwise.Controllers
             _loginService = loginService;
         }
 
+   
         [HttpPost("admin")]
+        
         public async Task<IActionResult> AdminLogin([FromBody] LoginRequest request)
         {
             request.role_type = 1;

@@ -1,7 +1,9 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using wrenchwise.Interfaces;
@@ -42,7 +44,9 @@ namespace wrenchwise.services
                     };
                 }
 
-                var token = GenerateJwtToken(request.email, RoleTypeIntToEnum(request.role_type ));
+                //var token = GenerateJwtToken(request.email, RoleTypeIntToEnum(request.role_type ));
+                var token = GenerateJwtToken(request.email, RoleTypeIntToEnum(request.role_type), result.login_id);
+
 
                 return new LoginResponse
                 {
@@ -51,7 +55,7 @@ namespace wrenchwise.services
                     Data = new
                     {
                         Token = token,
-                        Role = RoleTypeIntToEnum(request.role_type)
+                        Role = RoleTypeIntToEnum(request.role_type),
                     }
                 };
             }
@@ -66,17 +70,21 @@ namespace wrenchwise.services
         }
 
 
-        private string GenerateJwtToken(string email, string role)
+
+        private string GenerateJwtToken(string email, string role_type, int loginId)
         {
             var jwtSettings = _configuration.GetSection("Jwt");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+           
             var claims = new[]
-            {
-        new Claim(ClaimTypes.Name, email),
-        new Claim(ClaimTypes.Role, role)
-    };
+{
+                new Claim("email", email),  // ✅ use "email" instead of ClaimTypes.Name
+                new Claim("role", role_type),    // ✅ use "role" instead of ClaimTypes.Role
+                new Claim("login_id", loginId.ToString()),
+};
+
 
             var token = new JwtSecurityToken(
                 issuer: jwtSettings["Issuer"],
@@ -88,6 +96,30 @@ namespace wrenchwise.services
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+
+        //    private string GenerateJwtToken(string email, string role)
+        //    {
+        //        var jwtSettings = _configuration.GetSection("Jwt");
+        //        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
+        //        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        //        var claims = new[]
+        //        {
+        //    new Claim(ClaimTypes.Name, email),
+        //    new Claim(ClaimTypes.Role, role)
+        //};
+
+        //        var token = new JwtSecurityToken(
+        //            issuer: jwtSettings["Issuer"],
+        //            audience: jwtSettings["Audience"],
+        //            claims: claims,
+        //            expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings["ExpireMinutes"])),
+        //            signingCredentials: creds
+        //        );
+
+        //        return new JwtSecurityTokenHandler().WriteToken(token);
+        //    }
 
 
         private string RoleTypeIntToEnum(int? roleType)

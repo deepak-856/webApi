@@ -6,6 +6,7 @@ namespace wrenchwise.Interfaces
     public interface IUserService
     {
         Task<IActionResult> UpdateProfileAsync(UpdateUserprofile request);
+        Task<UserProfile>GetUserByLoginIdAsync(int loginId);
     }
 
    
